@@ -1,0 +1,24 @@
+\input{../common/command_definition}
+\setup{ngerman}
+
+% glossary
+\input{./resources/glossary}
+\addbibresource{../common/resources/literature.bib}
+
+\begin{document}
+
+    \include{title_page}
+    \newpage
+    \tableofcontents
+
+    \include{00_introduction/00_document}
+    \include{01_neuronal_network/00_document}
+
+    \newpage
+    \listoffigures
+    \printbibliography[heading=bibintoc]
+    \printunsrtglossary[style={index}]
+
+    \include{02_appendix/00_document}
+
+\end{document}
