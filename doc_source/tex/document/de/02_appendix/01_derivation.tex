@@ -5,7 +5,7 @@ Die Ableitung selbst ist wiederum eine Funktion und kann über diverse Ableitung
 selbst gebildet werden.
 \begin{figure}[h!]
     \begin{center}
-        \includegraphics[width=0.4\linewidth]{../common/02_appendix/00_resources/00_derivation.png}
+        \includegraphics[width=0.25\linewidth]{../common/02_appendix/00_resources/00_derivation.png}
     \end{center}
     \caption{Steigung an einem bestimmten Punkt der Funktion $f(x)$}
     \label{fig:00_steigung_an_punkt}
@@ -24,11 +24,11 @@ Die Schreibweise der Ableitung einer Funktion nach einer Variablen lautet $f'(x)
 Ist der Input einer Funktion mehrdimensional, das heisst, die Funktion $f$ ist abhängig von mehreren Variablen, dann
 kann die Ableitung jeweils lediglich nach einer Variablen gebildet werden. Die übrigen Variablen werden als konstant
 angesehen. In dem Fall beschreibt die partielle Ableitung die Steigung an einem bestimmten Punkt der abgeleiteten
-Dimension. Es sei als Beispiel die Funktion $f(x, z) = x^2 + z^2 + 10$ gegeben. Diese wird nun partiell nach $x$ sowie
+Dimension. Es sei als Beispiel die Funktion $f(x, y) = x^2 + y^2 + 10$ gegeben. Diese wird nun partiell nach $x$ sowie
 nach $z$ abgeleitet.
 \begin{align}
-    f^x(x, z) = 2x\\
-    f^z(x, z) = 2z
+    f^x(x, y) = 2x\\
+    f^y(x, y) = 2y
 \end{align}
 Die hierbei angewendete Ableitungsregel ist die Potenzregel, welche bereits im vorangegangenen Kapitel erwähnt wurde.
 
@@ -39,18 +39,26 @@ der Ableitung ersichtlich.
 \begin{align}
     sig(t) = \frac{1}{1 + e^{-t}}
 \end{align}
-Geometrisch lässt sich die Funktion so interpretieren, dass eine gewisse Schwelle existiert, ab der die Funktion
-den Eingabewert auf eine $1$ abbildet, in dem Jargon der Neuronen also \glqq feuert\grqq. Das Resultat lautet also
+Geometrisch lässt sich die Funktion wie in Abbildung \ref{fig:02_sigmoide} so interpretieren, dass eine gewisse Schwelle existiert, ab der die Funktion
+den Eingabewert auf $1$ abbildet, in dem Jargon der Neuronen also \glqq feuert\grqq. Das Resultat lautet
 entweder $0$ oder $1$.
-TODO: Bild
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=0.6\linewidth]{../common/02_appendix/00_resources/02_sigmoide.png}
+    \end{center}
+    \caption{Die Sigmoid-Funktion}
+    \label{fig:02_sigmoide}
+\end{figure}
 
 Für die weitere Verwendung ist nun vor allem die Ableitung der Sigmoide interessant, welche in den nachfolgenden
-Zeilen behandelt wird. Zuerst wird der Bruch durch eine andere Schreibweise (Exponent $-1$) dargestellt.
+Zeilen behandelt wird. Zuerst wird der Bruch durch eine andere Schreibweise (Exponent $-1$) dargestellt. Weiterhin
+lässt sich nun die Sigmoide als Verkettung von zwei Funktionen $f$ und $y$ schreiben.
 \begin{align}
-    sig(t) = (1 + e^{-t})^{-1} \longrightarrow y = 1 + e^{-t}, f(t) = y^{-1}
+    sig(t) = (1 + e^{-t})^{-1} \longrightarrow y(t) = 1 + e^{-t}, f(t) = y(t)^{-1}
 \end{align}
 Es handelt sich also um eine äussere und innere Funktion, wobei nun die Ableitungsregel \ref{abl:kettenregel} angewendet wird.
-Für die innere Ableitung wird nun noch die Regel für $e$ verwendet. TODO
+Für die innere Ableitung wird nun noch die Regel $f(x) = e^x \longrightarrow f'(x) = e^x$ verwendet.
 \begin{align}
     \frac{\delta f(t)}{\delta t} = (-1) \cdot (y(t))^{-2}\\
     \frac{\delta y(t)}{\delta t} = (e^{-t}) \cdot (-1)
@@ -62,15 +70,27 @@ Nach der Kettenregel resultiert:
 \end{align}
 Nun wird $\frac{1}{1 + e^{-t}}$ ausgeklammert.
 \begin{align}
-    \frac{\delta sig(t)}{\delta t} = \frac{1}{1 + e^{-t}} \cdot \frac{e^{-t}}{(1 + e^{-t})}
+    \frac{\delta sig(t)}{\delta t} = \frac{1}{1 + e^{-t}} \cdot \frac{e^{-t}}{1 + e^{-t}}
 \end{align}
 Beim Zähler wird 1 dazuaddiert und abgezogen, damit der Faktor umgeformt werden kann.
 \begin{align}
-    \frac{\delta sig(t)}{\delta t} = \frac{1}{1 + e^{-t}} \cdot \frac{e^{-t} + 1 - 1}{(1 + e^{-t})}\\
-    \frac{\delta sig(t)}{\delta t} = \frac{1}{1 + e^{-t}} \cdot (\frac{1 + e^{-t}}{(1 + e^{-t})} - \frac{1}{1 + e^{-t}})
+    \frac{\delta sig(t)}{\delta t} = \frac{1}{1 + e^{-t}} \cdot \frac{e^{-t} + 1 - 1}{1 + e^{-t}}\\
+    \frac{\delta sig(t)}{\delta t} = \frac{1}{1 + e^{-t}} \cdot (\frac{1 + e^{-t}}{1 + e^{-t}} - \frac{1}{1 + e^{-t}})
 \end{align}
 Es resultiert die Ableitung in bekannter Form \ref{eq:00_ableitung_sigmoide}
 \begin{align}
     \frac{\delta sig(t)}{\delta t} = sig(t) \cdot (1 - sig(t))\label{eq:00_ableitung_sigmoide}
 \end{align}
-
+Auch hier kann eine geometrische Interpretation in Abbildung \ref{fig:03_sigmoide_ableitung} erfolgen. Ersichtlich
+wird nun, dass die Steigung nur in einem sehr kleinen Intervall stark ungleich $0$ ist. Dies bedeutet, dass sich im
+Falle eines solchen Variablenwerts, wo die Steigung fast $0$ ist, kaum eine Korrektur durch den Gradienten\footnote{Siehe Kapitel \ref{chapter:00_gradient}} durchzuführen
+ist. Daher werden heutzutage Aktivierungsfunktionen wie die \glqq ReLU\grqq{} oder \glqq LeakyReLU\grqq{} verwendet, welche
+dieses Problem beheben.
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=0.6\linewidth]{../common/02_appendix/00_resources/03_sigmoide_ableitung.png}
+    \end{center}
+    \caption{Die Ableitung der Sigmoid-Funktion}
+    \label{fig:03_sigmoide_ableitung}
+\end{figure}
+\newpage

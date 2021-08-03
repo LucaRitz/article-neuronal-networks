@@ -1,4 +1,4 @@
-\section{Der Gradient}
+\section{Der Gradient}\label{chapter:00_gradient}
 Der Gradient beschreibt einen Vektor, welcher in Richtung des steilsten Anstiegs einer Funktion zeigt.
 Die Komponenten des Gradientenvektors bestehen aus den partiellen Ableitungen der Funktion an der jeweiligen Variablen.
 \begin{align}
@@ -7,7 +7,7 @@ Die Komponenten des Gradientenvektors bestehen aus den partiellen Ableitungen de
 Geometrisch kann dies an der Position $(x = 1, y = 1)$ für die Funktion $f(x, y) = x^2 + y^2$  wie in Abbildung
 \ref{fig:01_gradient} aussehen. Zu beachten sei hier, dass der eigentliche Gradient in der XY-Ebene liegt (blau).
 Der schwarze Vektor soll lediglich anzeigen, was eine Verschiebung in dieser Richtung bei der Eingabe der Variablen
-für den Ausgabewert der Funktion bedeutet.
+für den Ausgabewert der Funktion bedeutet. Die Länge des Gradienten entspricht der Stärke der Steigung an diesem Punkt.
 
 \begin{figure}[h!]
     \begin{center}
@@ -18,3 +18,13 @@ für den Ausgabewert der Funktion bedeutet.
 \end{figure}
 
 \section{Das Gradientenabstiegsverfahren}
+Hierbei handelt es sich um ein Optimierungsverfahren, um einen Maximal- oder Minimalwert einer gegebenen Zielfunktion
+zu finden. Es wird in dem Fall der Gradient, wie in Kapitel \ref{chapter:00_gradient} besprochen, verwendet. Die Idee
+ist, dass man bei einer Maximierung in kleinen Schritten in Richtung des Gradienten folgt. Als Beispiel wird eine
+Funktion angegeben, die von zwei Variablen $x, y$ abhängig ist. Beim Wert $\lambda$ handelt es sich um die Lernrate, welche
+die Länge der zu gehenden Schritte beeinflusst. Der $\vec{\nabla}$ steht hierbei für den Gradienten.
+\begin{align}
+    \begin{pmatrix}x_{neu} & y_{neu}\end{pmatrix} = \begin{pmatrix}x_{alt} & y_{alt}\end{pmatrix} + \lambda \cdot \vec{\nabla}
+\end{align}
+Geometrisch kann wiederum die Abbildung \ref{fig:01_gradient} hinzugezogen werden. Dort würde man in einem ersten Schritt
+in Richtung des schwarzen Vektors gehen, respektive in Richtung des Blauen, wenn man nur die Variablen beachtet.
