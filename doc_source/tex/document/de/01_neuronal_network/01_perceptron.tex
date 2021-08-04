@@ -8,7 +8,7 @@ er wird wiederum über ein Gewicht $w_0$ trainiert/eingestellt.
 
 \begin{figure}[h!]
     \begin{center}
-        \includegraphics[width=0.6\linewidth]{../common/01_perceptron/00_resources/00_perceptron.png}
+        \includegraphics[width=0.6\linewidth]{../common/01_neuronal_network/00_resources/00_perceptron.png}
     \end{center}
     \caption{Das Perceptron}
     \label{fig:04_perceptron}
@@ -86,4 +86,26 @@ Dasselbe Verfahren wird für die Gewichte $w_1$ sowie $w_2$ angewendet, es resul
     \frac{\delta P_{err}}{\delta w_2} = (d - z) \cdot z \cdot (1 - z) \cdot x_2
 \end{align}
 
+\newpage
 \subsection{Das Problem mit XOR und nichtlinearen Funktionen}
+Mittels eines Perceptrons kann also eine Funktion implementiert werden, die ab einer gewissen Schwelle den
+Ausgabewert 1 liefert. Geoemtrisch kann dies als eine lineare Separation angesehen werden. Es können z.B. logische
+Operatoren wie \glqq AND\grqq{}, \glqq OR\grqq{} oder auch \glqq NAND\grqq{} abgebildet werden.
+In der Abbildung \ref{fig:06_logische_operatoren_1} werden die genannten Operatoren gezeigt. Auf den X-Y-Achsen
+sind jeweils die Input-Variablen angegeben. Die Output-Dimension wird als Kreis dargestellt. Da der Input auf die Paare
+$(x, y) \longrightarrow (0 0), (1 0), (0 1), (1 1)$ beschränkt ist, befinden sich die Output-Werte ebenfalls nur an diesen
+Positionen. Wird an einer Stelle als Ausgabe eine $1$ erwartet, so ist der Kreis rot ausgefüllt. Wird eine $0$ erwartet,
+ist der Kreis nicht ausgefüllt.
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=0.6\linewidth]{../common/01_neuronal_network/00_resources/01_logische_operatoren.png}
+    \end{center}
+    \caption{Logische Operatoren und ihre Separierbarkeit}
+    \label{fig:06_logische_operatoren_1}
+\end{figure}
+In Abbildung \ref{fig:06_logische_operatoren_1} wird nun gezeigt, was mit einem Perceptron möglich ist. Es können nur
+Funktionen implementiert werden, die die einzelnen Klassen voneinander linear separieren können (durch die eingezeichnete
+rote Gerade). Dies ist im Falle von \glqq XOR\grqq{} nicht möglich. Der Leser kann sich selbst überlegen, wie eine solche
+Gerade auszusehen vermag, um eine Grenze zu ziehen. Diese Problematik wird nun durch ein neuronales Netz gelöst, wo
+viele dieser Perceptronen miteinander verbunden werden. Dadurch ergeben sich weitere Möglichkeiten, um die Werte in
+bestimmten Clustern zu klassifizieren. Es können also auch nichtlineare Funktionen abgebildet werden.

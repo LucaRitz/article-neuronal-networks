@@ -39,7 +39,11 @@ der Ableitung ersichtlich.
 \begin{align}
     sig(t) = \frac{1}{1 + e^{-t}}
 \end{align}
-Geometrisch lässt sich die Funktion wie in Abbildung \ref{fig:02_sigmoide} so interpretieren, dass eine gewisse Schwelle existiert, ab der die Funktion
+Geometrisch lässt sich die Funktion wie in Abbildung \ref{fig:02_sigmoide}\footnote{Die Sigmoid-Funktion kann über
+einen Parameter modifiziert werden. Die eigentliche Funktion lautet $sig(t) = \frac{1}{1 + e^{-\alpha \cdot t}}$. Für
+die Abbildungen der Sigmoide wie deren Ableitung wurde ein Parameter $\alpha = 10$ gewählt. Für die Herleitung
+der Ableitungskette der neuronalen Netze wie auch bei der weiteren Erklärung in diesem Kapitel wird der Wert auf $1$
+belassen. Für die Abbildung wurde ein höherer Wert gewählt, um den Effekt der Ableitung nahe 0 zu verdeutlichen.} so interpretieren, dass eine gewisse Schwelle existiert, ab der die Funktion
 den Eingabewert auf $1$ abbildet, in dem Jargon der Neuronen also \glqq feuert\grqq. Das Resultat lautet
 entweder $0$ oder $1$.
 

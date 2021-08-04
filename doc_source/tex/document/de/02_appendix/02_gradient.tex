@@ -11,14 +11,18 @@ für den Ausgabewert der Funktion bedeutet. Die Länge des Gradienten entspricht
 
 \begin{figure}[h!]
     \begin{center}
-        \includegraphics[width=0.6\linewidth]{../common/02_appendix/00_resources/01_gradient.png}
+        \includegraphics[width=0.5\linewidth]{../common/02_appendix/00_resources/01_gradient.png}
     \end{center}
     \caption{Gradient an der Position $(1, 1)$}
     \label{fig:01_gradient}
 \end{figure}
 
 \section{Das Gradientenabstiegsverfahren}\label{chapter:01_gradientenabstiegsverfahren}
-Hierbei handelt es sich um ein Optimierungsverfahren, um einen Maximal- oder Minimalwert einer gegebenen Zielfunktion
+Hierbei handelt es sich um ein Optimierungsverfahren, um einen Maximal- oder Minimalwert\footnote{Obwohl das Verfahren Gradientenabstieg
+heisst, kann ebenso ein Gradientenaufstieg durchgeführt werden. Dies ist auch der Ansatz, der in diesem Kapitel erwähnt wird.
+Beim Gradientenabstieg wird lediglich der Gradientenvektor in die umgekehrte Richtung verfolgt, man sucht also ein Minimum.
+Die Formel lautet in dem Fall $\vec{w_neu} = \vec{w_alt} - \lambda \cdot \vec{\nabla}$, wobei der Vektor $\vec{w}$ für
+die anzupassenden Variablen steht.} einer gegebenen Zielfunktion
 zu finden. Es wird in dem Fall der Gradient, wie in Kapitel \ref{chapter:00_gradient} besprochen, verwendet. Die Idee
 ist, dass man bei einer Maximierung in kleinen Schritten in Richtung des Gradienten folgt. Als Beispiel wird eine
 Funktion angegeben, die von zwei Variablen $x, y$ abhängig ist. Beim Wert $\lambda$ handelt es sich um die Lernrate, welche
