@@ -19,7 +19,7 @@ Man berechnet also die quadratische Differenz zwischen dem erwarteten Wert $d$ s
 \begin{align}
     P_{err} = \sum_i^n(d_i - z_i)^2
 \end{align}
-Im Falle des Perceptrons gibt es nur einen Output-Wert. Daher lässt sich die Fehlerfunktion wie in \ref{eq:01_fehlerfunktion_perceptron}
+Im Falle des Perceptrons gibt es nur einen Output-Wert. Daher lässt sich die Fehlerfunktion wie in Gleichung \ref{eq:01_fehlerfunktion_perceptron}
 darstellen.
 \begin{align}
     P_{err} = (d - z)^2\label{eq:01_fehlerfunktion_perceptron}
@@ -48,9 +48,9 @@ Die Gewichte können anhand des Gradienten korrigiert werden.
 \begin{align}
     \begin{pmatrix}w_{0, neu} & w_{1, neu} & w_{2, neu}\end{pmatrix} = \begin{pmatrix}w_{0, alt} & w_{1, alt} & w_{2, alt}\end{pmatrix} + \lambda \cdot \vec{\nabla}
 \end{align}
-Dieser Gradient setzt sich nun aus der Ableitungskette der verschiedenen Funktionen zusammen, welche nacheinander aufgerufen
-und jeweils als Input für die nächste dienen. Dazu wird das Perceptron aus Abbildung \ref{fig:04_perceptron} von
-hinten her aufgerollt. Der Gradient lautet demnach:
+Dieser Gradient setzt sich nun aus der partiellen Ableitungskette der verschiedenen Funktionen nach den einzelnen
+Gewichten zusammen, welche nacheinander aufgerufen und jeweils als Input für die nächste dienen.
+Dazu wird das Perceptron aus Abbildung \ref{fig:04_perceptron} von hinten her aufgerollt. Der Gradient lautet demnach:
 \begin{align}
     \vec{\nabla} = \begin{pmatrix}\frac{\delta P_{err}}{\delta w_0} & \frac{\delta P_{err}}{\delta w_1} & \frac{\delta P_{err}}{\delta w_2} \end{pmatrix}
 \end{align}
