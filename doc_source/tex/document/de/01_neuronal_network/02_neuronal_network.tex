@@ -1,9 +1,9 @@
+\newpage
 \section{Neuronale Netze}
 Ein neuronales Netz ist ein Zusammenschluss aus mehreren Perceptronen in verschiedenen Layern. Als Beispiel sei an
 dieser Stelle die Abbildung \ref{fig:07_neuronal_network} gegeben. Dieses wird ebenso verwendet, um die Ableitungskette
 für ein Gewicht in diesem Fall zu zeigen. Anzumerken sei hier, dass die Kombination der gewichteten Summem mit der
 Aktivierungsfunktion ein Neuron darstellt.
-
 \begin{figure}[h!]
     \begin{center}
         \includegraphics[width=1\linewidth]{../common/01_neuronal_network/00_resources/02_neuronales_netz.png}
@@ -12,12 +12,23 @@ Aktivierungsfunktion ein Neuron darstellt.
     \label{fig:07_neuronal_network}
 \end{figure}
 
+\newpage
 \subsection{Lernverfahren mit Gradientenabstieg}
 Wie beim Perceptron auch soll nun an dieser Stelle die Komponente des Gradienten für das Gewicht $w_1^1$ gezeigt
-werden. Für dieses Beispiel wird die Abbildung \ref{fig:07_neuronal_network} hinzugezogen.
+werden. Für dieses Beispiel wird die Abbildung \ref{fig:08_neuronal_network} hinzugezogen.
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=1\linewidth]{../common/01_neuronal_network/00_resources/03_neuronales_netz_pfad.png}
+    \end{center}
+    \caption{Der Pfad zum Gewicht $w_1^1$ im neuronalen Netz}
+    \label{fig:08_neuronal_network}
+\end{figure}
 Die Fehlerfunktion ist wie beim Perceptron dieselbe $P_{err} = - \frac{1}{2} \cdot \sum_i^2 (d^i - z_2^i)^2$.
 In diesem Fall steht die Komponente $i$ für den Index und die $2$ für den Layer.
-Folgende Werte sind bekannt:
+Zur Abbildung \ref{fig:08_neuronal_network} ist wichtig zu erkennen, dass für die Korrektor des Gewichts $w_1^1$
+mehrere Wege relevant sind. Es kann einmal der grüne sowie der blaue Weg verfolgt werden. Der Teil, welcher bei
+beiden gleich ist, wird cyan markiert.
+Weiterhin sind folgende Werte sind bekannt:
 \begin{align}
     P_{err} = - \frac{1}{2} \cdot \sum_i^2 (d^i - z_2^i)^2\\
     net_1^1 = x_1 \cdot w_1^1 + x_2 \cdot w_2^1 - w_0^1\\
@@ -39,7 +50,7 @@ Die Korrektur in einem Schritt kann wiederum über den Vektor der Gewichte $\vec
 \end{align}
 Wie bereits erwähnt wird nun nur die Komponente $w_1^1$ aus dem Vektor $\vec{\nabla}$
 berücksichtigt. Um diesen herzuleiten, müssen alle Pfade zum Gewicht berücksichtigt werden.
-In dem Fall gibt es zwei Pfade:
+In dem Fall gibt es, wie in Abbildung \ref{fig:08_neuronal_network} entnommen werden kann, deren zwei:
 \begin{multline}
     P_{err} = - \frac{1}{2} \cdot (d^1 - z_2^1(net_2^1(w_4^1 \cdot z_1^1(net_1^1(w_1^1 \cdot x_1, w_2^1 \cdot x_2, -w_0^1)), z_1^2 \cdot w_5^1, -w_3^1)))^2 + (d^2 - z_2^2)\\
     P_{err} = - \frac{1}{2} \cdot (d^2 - z_2^2(net_2^2(w_4^2 \cdot z_1^1(net_1^1(w_1^1 \cdot x_1, w_2^1 \cdot x_2, -w_0^1)), z_1^2 \cdot w_5^2, -w_3^2)))^2 + (d^1 - z_2^1)
