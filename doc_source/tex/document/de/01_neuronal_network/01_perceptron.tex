@@ -27,7 +27,7 @@ darstellen.
 
 \subsection{Lernverfahren}
 Um nun die Gewichte entsprechend ihrem Anteil am Fehler zu korrigieren, wird das Gradientenabstiegsverfahren\footnote{Siehe Kapitel \ref{chapter:01_gradientenabstiegsverfahren}}
-verwendet. Dazu muss die Ableitung der Fehlerfunktion bekannt sein. Um diese Ableitung nun einfacher zu gestalten,
+verwendet. Dazu muss die Ableitung der Fehlerfunktion bekannt sein. Um diese Ableitung einfacher zu gestalten,
 wird die Fehlerfunktion mit einem konstanten Faktor $\frac{1}{2}$ multipliziert. Dieser Faktor hat keinen Einfluss
 auf Minima oder Maxima, da er an jedem Punkt der Funktion angewendet wird.
 \begin{align}
@@ -48,8 +48,8 @@ Die Gewichte können anhand des Gradienten korrigiert werden.
 \begin{align}
     \begin{pmatrix}w_{0, neu} & w_{1, neu} & w_{2, neu}\end{pmatrix} = \begin{pmatrix}w_{0, alt} & w_{1, alt} & w_{2, alt}\end{pmatrix} + \lambda \cdot \vec{\nabla}
 \end{align}
-Dieser Gradient setzt sich nun aus der partiellen Ableitungskette der verschiedenen Funktionen nach den einzelnen
-Gewichten zusammen, welche nacheinander aufgerufen und jeweils als Input für die nächste dienen.
+Dieser Gradient setzt sich aus der partiellen Ableitungskette der verschiedenen Funktionen nach den einzelnen
+Gewichten zusammen, welche nacheinander aufgerufen werden und jeweils als Input für die Nächste dienen.
 Dazu wird das Perceptron aus Abbildung \ref{fig:04_perceptron} von hinten her aufgerollt. Der Gradient lautet demnach:
 \begin{align}
     \vec{\nabla} = \begin{pmatrix}\frac{\delta P_{err}}{\delta w_0} & \frac{\delta P_{err}}{\delta w_1} & \frac{\delta P_{err}}{\delta w_2} \end{pmatrix}
@@ -66,7 +66,7 @@ Für $z$ und $net$ gilt:
     net = -1 \cdot w_0 + x_1 \cdot w_1 + x_2 \cdot w_2
 \end{align}
 
-Um nun den Wert des Gradienten für $w_0$ zu bilden, muss die Funktion $P_{err}$ für $w_0$ partiell abgeleitet
+Um den Wert des Gradienten für $w_0$ zu bilden, muss die Funktion $P_{err}$ für $w_0$ partiell abgeleitet
 werden. Dies geschieht durch konsequentes Anwenden der Kettenregel.
 \begin{align}
     \frac{\delta P_{err}}{\delta z(w_0)} = (d - z)\\
@@ -74,7 +74,7 @@ werden. Dies geschieht durch konsequentes Anwenden der Kettenregel.
     \frac{\delta net(w_0)}{\delta w_0} = -1
 \end{align}
 
-Die gesamte Ableitungskette nach Anwendung der Kettenregel lautet nun:
+Die gesamte Ableitungskette nach Anwendung der Kettenregel lautet:
 \begin{align}
     \frac{\delta P_{err}}{\delta w_0} = \frac{\delta P_{err}}{\delta z(w_0)} \cdot \frac{\delta z(w_0)}{\delta net(w_0)} \cdot \frac{\delta net(w_0)}{\delta w_0}\\
     \frac{\delta P_{err}}{\delta w_0} = (d - z) \cdot z \cdot (1 - z) \cdot -1\label{eq:02_ableitungskette_perceptron}
@@ -87,13 +87,13 @@ Dasselbe Verfahren wird für die Gewichte $w_1$ sowie $w_2$ angewendet, es resul
 \end{align}
 
 \newpage
-\subsection{Das Problem mit XOR und nichtlinearen Funktionen}
+\subsection{Das Problem mit XOR und nichtlinearen Funktionen}\label{chapter:02_xor_perceptron}
 Mittels eines Perceptrons kann also eine Funktion implementiert werden, die ab einer gewissen Schwelle den
 Ausgabewert 1 liefert. Geoemtrisch kann dies als eine lineare Separation angesehen werden. Es können z.B. logische
 Operatoren wie \glqq AND\grqq{}, \glqq OR\grqq{} oder auch \glqq NAND\grqq{} abgebildet werden.
 In der Abbildung \ref{fig:06_logische_operatoren_1} werden die genannten Operatoren gezeigt. Auf den X-Y-Achsen
 sind jeweils die Input-Variablen angegeben. Die Output-Dimension wird als Kreis dargestellt. Da der Input auf die Paare
-$(x, y) \longrightarrow (0 0), (1 0), (0 1), (1 1)$ beschränkt ist, befinden sich die Output-Werte ebenfalls nur an diesen
+$(x,y) \longrightarrow (0,0), (1,0), (0,1), (1,1)$ beschränkt ist, befinden sich die Output-Werte ebenfalls nur an diesen
 Positionen. Wird an einer Stelle als Ausgabe eine $1$ erwartet, so ist der Kreis rot ausgefüllt. Wird eine $0$ erwartet,
 ist der Kreis nicht ausgefüllt.
 \begin{figure}[h!]
@@ -103,9 +103,9 @@ ist der Kreis nicht ausgefüllt.
     \caption{Logische Operatoren und ihre Separierbarkeit}
     \label{fig:06_logische_operatoren_1}
 \end{figure}
-In Abbildung \ref{fig:06_logische_operatoren_1} wird nun gezeigt, was mit einem Perceptron möglich ist. Es können nur
+In Abbildung \ref{fig:06_logische_operatoren_1} wird gezeigt, was mit einem Perceptron möglich ist. Es können nur
 Funktionen implementiert werden, die die einzelnen Klassen voneinander linear separieren können (durch die eingezeichnete
 rote Gerade). Dies ist im Falle von \glqq XOR\grqq{} nicht möglich. Der Leser kann sich selbst überlegen, wie eine solche
-Gerade auszusehen vermag, um eine Grenze zu ziehen. Diese Problematik wird nun durch ein neuronales Netz gelöst, wo
-viele dieser Perceptronen miteinander verbunden werden. Dadurch ergeben sich weitere Möglichkeiten, um die Werte in
+Gerade auszusehen vermag, um eine Grenze zu ziehen. Diese Problematik soll durch ein neuronales Netz gelöst werden, wo
+viele dieser Perceptronen miteinander verbunden sind. Dadurch ergeben sich weitere Möglichkeiten, um die Werte in
 bestimmten Clustern zu klassifizieren. Es können also auch nichtlineare Funktionen abgebildet werden.

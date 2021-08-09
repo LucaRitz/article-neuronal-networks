@@ -1,8 +1,8 @@
 \newpage
 \section{Neuronale Netze}
 Ein neuronales Netz ist ein Zusammenschluss aus mehreren Perceptronen in verschiedenen Layern. Als Beispiel sei an
-dieser Stelle die Abbildung \ref{fig:07_neuronal_network} gegeben. Dieses wird ebenso verwendet, um die Ableitungskette
-für ein Gewicht in diesem Fall zu zeigen. Anzumerken sei hier, dass die Kombination der gewichteten Summem mit der
+dieser Stelle die Abbildung \ref{fig:07_neuronal_network} gegeben. Diese wird ebenso verwendet, um die Ableitungskette
+für ein Gewicht in diesem Fall zu zeigen. Anzumerken sei hier, dass die Kombination der gewichteten Summen mit der
 Aktivierungsfunktion ein Neuron darstellt.
 \begin{figure}[h!]
     \begin{center}
@@ -48,7 +48,7 @@ Die Korrektur in einem Schritt kann wiederum über den Vektor der Gewichte $\vec
 \begin{align}
     \vec{w}_{neu} = \vec{w}_{alt} + \lambda \cdot \vec{\nabla}
 \end{align}
-Wie bereits erwähnt wird nun nur die Komponente $w_1^1$ aus dem Vektor $\vec{\nabla}$
+Wie bereits erwähnt wird nur die Komponente $w_1^1$ aus dem Vektor $\vec{\nabla}$
 berücksichtigt. Um diesen herzuleiten, müssen alle Pfade zum Gewicht berücksichtigt werden.
 In dem Fall gibt es, wie in Abbildung \ref{fig:08_neuronal_network} entnommen werden kann, deren zwei.
 Die Funktionskette ist in Gleichung \ref{eq:03_funktions_kette} ersichtlich. Es werden nur die wirklich relevanten Aufrufe
@@ -67,7 +67,7 @@ Anders ausgedrückt lautet demnach die Komponente:
     w_{1,korr}^1 = (d^1 - z_2^1) \cdot z_2^1(1 - z_2^1) \cdot w_4^1 \cdot z_1^1(1 - z_1^1) \cdot x_1 +\\
     (d^2 - z_2^2) \cdot z_2^2(1 - z_2^2) \cdot w_4^2 \cdot z_1^1(1 - z_1^1) \cdot x_1
 \end{multline}
-An dieser Stelle sei nun angemerkt, dass dieses Verfahren durchaus funktioniert, jedoch wachsen die Ableitungsterme
+An dieser Stelle sei angemerkt, dass dieses Verfahren durchaus funktioniert, jedoch wachsen die Ableitungsterme
 exponentiell mit der Anzahl Neuronen in den Layern. Aus diesem Grund ist der Gradientenabstieg so nicht brauchbar in
 der Praxis. Was jedoch auffällt ist die Tatsache, dass einmal berechnete Ableitungsketten wiederverwendet werden können.
 Gedanklich kann an dieser Stelle z.B. die Ableitungskette für $w_2^1$ hinzugezogen werden. Man erkennt relativ schnell,
@@ -79,13 +79,13 @@ dynamischen Programmierung wurde der Backpropagation Algorithmus entwickelt.
 Der grosse Vorteil dieses Verfahrens ist die Berechnungszeit, welche im Vergleich zum reinen Gradientenabstieg nur noch
 linear mit den Anzahl der Gewichte wächst. So werden einmal berechnete Ableitungsketten gespeichert und wiederverwendet.
 Der Input-Layer wird nicht beachtet, dieser ist für die Berechnung irrelevant. Die verbleibenden Layer (Hidden-, Output-Layer)
-bilden nun die zwei Fälle des Algorithmus.
+bilden die zwei zu unterscheidenden Fälle des Algorithmus.
 \\
 
 Zuerst betrachtet man den Fall, wo es sich um den Output-Layer handelt. Um dies zu veranschaulichen, kann
 die Abbildung \ref{fig:08_backpropagation_output} betrachtet werden. Auf der rechten Seite der Abbildung sind die Werte ersichtlich,
 die zu diesem Zeitpunkt bekannt sind. In dem Fall gibt es keine folgende Schicht, da es sich selbst um den Output-Layer
-handelt und das einzig Bekannte ist somit der Fehlerwert $P_{err}$. Hierbei stehen nun die Angaben $r$ für die Schicht,
+handelt und das einzig Bekannte ist somit der Fehlerwert $P_{err}$. Hierbei stehen die Angaben $r$ für die Schicht,
 $i$ für die Anzahl der Neuronen der Schicht und $j$ für die Anzahl der Gewichte (Inputs), welche pro Neuron existieren.
 In diesem Beispiel ist $j = 3$. Die Gewichte erhalten dadurch mit $i = 2$ die folgende Nummerierung:
 $w_1^r$, $w_2^r$, $w_3^r$, $w_4^r$, $w_5^r$, $w_6^r$. Ebenfalls relevant ist hierbei, dass es sich um ein Fully-Connected
@@ -101,7 +101,7 @@ Netzwerk handelt, also alle jeweiligen Outputs mit allen Neuronen der folgenden 
 Am Ende sollen auch hier die Gewichte korrigiert werden, es wird nun aber ein Zwischenschritt geschaltet.
 Dieser Zwischenschritt besteht aus der Berechnung des Terms $\delta_i^r$. Dieser Term beschreibt die Ableitungskette
 $\frac{\delta P_{err}}{\delta z_i^r} \cdot \frac{\delta z_i^r}{\delta net_i^r}$. Man beachte, dass es genau so viele Elemente
-$delta_i^r$ wie Neuronen in der Schicht $r$ gibt.
+$\delta_i^r$ wie Neuronen in der Schicht $r$ gibt.
 Im Falle des Perceptrons gibt es z.B. nur ein Element, im Falle eines neuronalen Netzes gibt es im Output-Layer so viele Elemente wie
 Output-Klassen (Neuronen). Zu diesem Zeitpunkt gibt es noch keine Korrektur der Gewichte.
 Es kann also festgehalten werden, dass gilt:
@@ -113,11 +113,11 @@ Es kann also festgehalten werden, dass gilt:
 Beim zweiten Fall handelt es sich um einen Hidden-Layer. Dazu kann Abbildung \ref{fig:09_backpropagation_hidden} hinzugezogen
 werden. Wie vorhin auch steht hier $r$ für die Schicht, welche berechnet werden soll, $i$ für die Anzahl der Neuronen
 der Schicht $r$, $j$ für die Anzahl der Gewichte (Inputs) pro Neuron der Schicht $r$, $k$ für die vorher berechnete
-Schicht, $l$ für die Anzahl der Neuronen der Schicht $k$, $m$ für die Anzahl der Gewichte der Schicht $k$ (bei einem
+Schicht, $l$ für die Anzahl der Neuronen der Schicht $k$, $m$ für die Anzahl der Gewichte pro Neuron der Schicht $k$ (bei einem
 Full-Connected Netzwerk gilt $m = i + 1$). Auf der rechten Seite können ebenfalls die bekannten Werte abgelesen werden.
-Diese setzen sich nun aus den bereits vorhin gesehenen Termen $\delta_l^k$\footnote{Anzumerken sei hier, dass es sich bei $l$ nur
-um einen Platzhalter handelt. Die Nummerierung geht von $1$ bis $l$, es existieren also $l$ $\delta$.} zusammen. Es sind die Ableitungen nach $net_l^k$.
-Wie bereits erwähnt gibt es so viele Terme, wie Neuronen der Schicht $k$.
+Diese setzen sich aus den bereits vorhin gesehenen Termen\footnote{Anzumerken sei hier, dass es sich bei $l$ nur
+um einen Platzhalter handelt. Die Nummerierung geht von $1$ bis $l$, es existieren also $l$ $\delta$.} $\delta_l^k$ zusammen. Es sind die Ableitungen der
+Fehlerfunktion $P_{err}$ nach $net_l^k$. Wie bereits erwähnt gibt es so viele Terme, wie Neuronen der Schicht $k$.
 \begin{figure}[h!]
     \begin{center}
         \includegraphics[width=1\linewidth]{../common/01_neuronal_network/00_resources/05_backpropagation_hidden.png}
@@ -142,7 +142,7 @@ Neurons betrachtet. Dieses führt immer zu $z_i^r$.
 \\
 
 Da der Term $\delta_i^r$ nun für beide Fälle bekannt ist, können zuletzt die Gewichte korrigiert werden.
-Man nehme nun an, dass es bei den Gewichten der Schicht $r$ die Inputs $x_{ij}^{r-1}$ der vorherigen Schicht $r-1$ gibt,
+Man nehme an, dass es bei den Gewichten der Schicht $r$ die Inputs $x_{ij}^{r-1}$ der vorherigen Schicht $r-1$ gibt,
 die ebenso wie die Gewichte nummeriert sind. In dem Fall würde die Korrektur für $w_{ij}^r$ lauten:
 \begin{align}
     \delta_i^r = \frac{\delta P_{err}}{\delta net_i^r}\\
@@ -172,5 +172,37 @@ Zu guter Letzt kann noch der abschliessende Algorithmus \ref{alg:00_backpropagat
     \caption{Backpropagation Algorithmus}
     \label{alg:00_backpropagation}
 \end{algorithm}
+Hierbei gibt $o$ die zu berechnende Schicht an. Diese beginnt am Ende, also beim Output-Layer. Der Input-Layer wird nicht
+berücksichtigt, weswegen das Verfahren bei der vorletzten Schicht stoppt.
 
+\newpage
 \subsection{XOR und die Lösung}
+Um noch ein Beispiel einer nichtlinearen Funktion, welche ein neuronales Netz darstellt, zu nennen, wird das vorherige
+Beispiel von \glqq XOR\grqq{} aus Kapitel \ref{chapter:02_xor_perceptron} wiederaufgegriffen. Diesmal wird ein neuronales Netz mit
+zwei Inputs, einem Hidden-Layer mit zwei Neuronen sowie einem Output-Layer mit einem Neuron erstellt (siehe Abbildung
+\ref{fig:10_xor_neuronal_network}).
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=1\linewidth]{../common/01_neuronal_network/00_resources/06_xor_neuronal_network.png}
+    \end{center}
+    \caption{Ein neuronales Netz für XOR}
+    \label{fig:10_xor_neuronal_network}
+\end{figure}
+\newpage
+
+Hierbei werden die Neuronen der Schichten speziell trainiert. Wie man in der Abbildung \ref{fig:11_xor_neuronal_network_operator}
+entnehmen kann, ist \glqq XOR\grqq{} die Kombination durch \glqq AND\grqq{} von \glqq OR\grqq{} und \glqq NAND\grqq{}.
+Diese Kombination wird ebenfalls durch das neuronale Netz in Abbildung \ref{fig:10_xor_neuronal_network} erzielt.
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=1\linewidth]{../common/01_neuronal_network/00_resources/07_xor_neuronal_network_logical.png}
+    \end{center}
+    \caption{Die Kombination logischer Operatoren zur Erzielung von XOR}
+    \label{fig:11_xor_neuronal_network_operator}
+\end{figure}
+\\
+
+Mathematisch kann man sich ein \glqq XOR\grqq{} relativ gut vorstellen und dementsprechend die Architektur des neuronalen
+Netzes wählen. Bei der Klassifikation in Bilderkennung ist dies jedoch nicht mehr so offensichtlich, weswegen beim Training des
+Netzes auch sehr viele verschiedene Architekturen (Anzahl Hidden Layer, Anzahl Neuronen, usw.) ausprobiert werden müssen,
+um eine möglichst gute Annäherung zu finden.

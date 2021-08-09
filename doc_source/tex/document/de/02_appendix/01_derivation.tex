@@ -55,21 +55,21 @@ entweder $0$ oder $1$.
     \label{fig:02_sigmoide}
 \end{figure}
 
-Für die weitere Verwendung ist nun vor allem die Ableitung der Sigmoide interessant, welche in den nachfolgenden
+Für die weitere Verwendung ist vor allem die Ableitung der Sigmoide interessant, welche in den nachfolgenden
 Zeilen behandelt wird. Zuerst wird der Bruch durch eine andere Schreibweise (Exponent $-1$) dargestellt. Weiterhin
-lässt sich nun die Sigmoide als Verkettung von zwei Funktionen $f$ und $y$ schreiben.
+lässt sich die Sigmoide als Verkettung von zwei Funktionen $f$ und $y$ schreiben.
 \begin{align}
     sig(t) = (1 + e^{-t})^{-1} \longrightarrow y(t) = 1 + e^{-t}, f(t) = y(t)^{-1}
 \end{align}
 Es handelt sich also um eine äussere und innere Funktion, wobei nun die Ableitungsregel \ref{abl:kettenregel} angewendet wird.
-Für die innere Ableitung wird nun noch die Regel $f(x) = e^x \longrightarrow f'(x) = e^x$ verwendet.
+Für die innere Ableitung wird noch die Regel $f(x) = e^x \longrightarrow f'(x) = e^x$ verwendet.
 \begin{align}
     \frac{\delta f(t)}{\delta t} = (-1) \cdot (y(t))^{-2}\\
     \frac{\delta y(t)}{\delta t} = (e^{-t}) \cdot (-1)
 \end{align}
 Nach der Kettenregel resultiert:
 \begin{align}
-    \frac{\delta sig(t)}{\delta t} = (-1) \cdot (1 + e^{-t})^{-2} \cdot (e^-t) \cdot (-1)\\
+    \frac{\delta sig(t)}{\delta t} = (-1) \cdot (1 + e^{-t})^{-2} \cdot (e^{-t}) \cdot (-1)\\
     \frac{\delta sig(t)}{\delta t} = \frac{e^{-t}}{(1 + e^{-t})^{2}}
 \end{align}
 Nun wird $\frac{1}{1 + e^{-t}}$ ausgeklammert.
