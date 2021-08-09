@@ -50,10 +50,12 @@ Die Korrektur in einem Schritt kann wiederum über den Vektor der Gewichte $\vec
 \end{align}
 Wie bereits erwähnt wird nun nur die Komponente $w_1^1$ aus dem Vektor $\vec{\nabla}$
 berücksichtigt. Um diesen herzuleiten, müssen alle Pfade zum Gewicht berücksichtigt werden.
-In dem Fall gibt es, wie in Abbildung \ref{fig:08_neuronal_network} entnommen werden kann, deren zwei:
+In dem Fall gibt es, wie in Abbildung \ref{fig:08_neuronal_network} entnommen werden kann, deren zwei.
+Die Funktionskette ist in Gleichung \ref{eq:03_funktions_kette} ersichtlich. Es werden nur die wirklich relevanten Aufrufe
+gezeigt.
 \begin{multline}
-    P_{err} = - \frac{1}{2} \cdot (d^1 - z_2^1(net_2^1(w_4^1 \cdot z_1^1(net_1^1(w_1^1 \cdot x_1, w_2^1 \cdot x_2, -w_0^1)), z_1^2 \cdot w_5^1, -w_3^1)))^2 + (d^2 - z_2^2)\\
-    P_{err} = - \frac{1}{2} \cdot (d^2 - z_2^2(net_2^2(w_4^2 \cdot z_1^1(net_1^1(w_1^1 \cdot x_1, w_2^1 \cdot x_2, -w_0^1)), z_1^2 \cdot w_5^2, -w_3^2)))^2 + (d^1 - z_2^1)
+    P_{err} = - \frac{1}{2} \cdot (d^1 - z_2^1(net_2^1(w_4^1 \cdot z_1^1(net_1^1(w_1^1 \cdot x_1, w_2^1 \cdot x_2, -w_0^1)), z_1^2 \cdot w_5^1, -w_3^1)))^2 +\\\label{eq:03_funktions_kette}
+    - \frac{1}{2} \cdot (d^2 - z_2^2(net_2^2(w_4^2 \cdot z_1^1(net_1^1(w_1^1 \cdot x_1, w_2^1 \cdot x_2, -w_0^1)), z_1^2 \cdot w_5^2, -w_3^2)))^2
 \end{multline}
 Dementspreched werden die beiden Pfade für die Komponente des Gradienten für $w_1^1$ berücksichtigt.
 \begin{multline}
@@ -72,8 +74,103 @@ Gedanklich kann an dieser Stelle z.B. die Ableitungskette für $w_2^1$ hinzugezo
 dass viele Berechnung, welche schon für $w_1^1$ gemacht wurden, wiederauftreten. Auf Grundlage dieser Idee der
 dynamischen Programmierung wurde der Backpropagation Algorithmus entwickelt.
 
+\newpage
 \subsection{Lernverfahren mit Backpropagation}
 Der grosse Vorteil dieses Verfahrens ist die Berechnungszeit, welche im Vergleich zum reinen Gradientenabstieg nur noch
 linear mit den Anzahl der Gewichte wächst. So werden einmal berechnete Ableitungsketten gespeichert und wiederverwendet.
+Der Input-Layer wird nicht beachtet, dieser ist für die Berechnung irrelevant. Die verbleibenden Layer (Hidden-, Output-Layer)
+bilden nun die zwei Fälle des Algorithmus.
+\\
+
+Zuerst betrachtet man den Fall, wo es sich um den Output-Layer handelt. Um dies zu veranschaulichen, kann
+die Abbildung \ref{fig:08_backpropagation_output} betrachtet werden. Auf der rechten Seite der Abbildung sind die Werte ersichtlich,
+die zu diesem Zeitpunkt bekannt sind. In dem Fall gibt es keine folgende Schicht, da es sich selbst um den Output-Layer
+handelt und das einzig Bekannte ist somit der Fehlerwert $P_{err}$. Hierbei stehen nun die Angaben $r$ für die Schicht,
+$i$ für die Anzahl der Neuronen der Schicht und $j$ für die Anzahl der Gewichte (Inputs), welche pro Neuron existieren.
+In diesem Beispiel ist $j = 3$. Die Gewichte erhalten dadurch mit $i = 2$ die folgende Nummerierung:
+$w_1^r$, $w_2^r$, $w_3^r$, $w_4^r$, $w_5^r$, $w_6^r$. Ebenfalls relevant ist hierbei, dass es sich um ein Fully-Connected
+Netzwerk handelt, also alle jeweiligen Outputs mit allen Neuronen der folgenden Schicht verbunden sind.
+
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=1\linewidth]{../common/01_neuronal_network/00_resources/04_backpropagation_output.png}
+    \end{center}
+    \caption{Die Output-Schicht eines neuronalen Netzes für Backpropagation}
+    \label{fig:08_backpropagation_output}
+\end{figure}
+Am Ende sollen auch hier die Gewichte korrigiert werden, es wird nun aber ein Zwischenschritt geschaltet.
+Dieser Zwischenschritt besteht aus der Berechnung des Terms $\delta_i^r$. Dieser Term beschreibt die Ableitungskette
+$\frac{\delta P_{err}}{\delta z_i^r} \cdot \frac{\delta z_i^r}{\delta net_i^r}$. Man beachte, dass es genau so viele Elemente
+$delta_i^r$ wie Neuronen in der Schicht $r$ gibt.
+Im Falle des Perceptrons gibt es z.B. nur ein Element, im Falle eines neuronalen Netzes gibt es im Output-Layer so viele Elemente wie
+Output-Klassen (Neuronen). Zu diesem Zeitpunkt gibt es noch keine Korrektur der Gewichte.
+Es kann also festgehalten werden, dass gilt:
+\begin{align}
+    \delta_i^r = (d_i^r - z_i^r) \cdot z_i^r(1 - z_i^r) \cdot \label{eq:04_delta_output}
+\end{align}
+
+\newpage
+Beim zweiten Fall handelt es sich um einen Hidden-Layer. Dazu kann Abbildung \ref{fig:09_backpropagation_hidden} hinzugezogen
+werden. Wie vorhin auch steht hier $r$ für die Schicht, welche berechnet werden soll, $i$ für die Anzahl der Neuronen
+der Schicht $r$, $j$ für die Anzahl der Gewichte (Inputs) pro Neuron der Schicht $r$, $k$ für die vorher berechnete
+Schicht, $l$ für die Anzahl der Neuronen der Schicht $k$, $m$ für die Anzahl der Gewichte der Schicht $k$ (bei einem
+Full-Connected Netzwerk gilt $m = i + 1$). Auf der rechten Seite können ebenfalls die bekannten Werte abgelesen werden.
+Diese setzen sich nun aus den bereits vorhin gesehenen Termen $\delta_l^k$\footnote{Anzumerken sei hier, dass es sich bei $l$ nur
+um einen Platzhalter handelt. Die Nummerierung geht von $1$ bis $l$, es existieren also $l$ $\delta$.} zusammen. Es sind die Ableitungen nach $net_l^k$.
+Wie bereits erwähnt gibt es so viele Terme, wie Neuronen der Schicht $k$.
+\begin{figure}[h!]
+    \begin{center}
+        \includegraphics[width=1\linewidth]{../common/01_neuronal_network/00_resources/05_backpropagation_hidden.png}
+    \end{center}
+    \caption{Zwei Schichten eines neuronalen Netzes für Backpropagation}
+    \label{fig:09_backpropagation_hidden}
+\end{figure}
+
+Auch in diesem Fall geht es um die Berechnung des Terms $\delta_i^r$ anhand der genannten bekannten Terme. Es müssen wiederum
+alle Pfade, welche zu dem Neuron führen, betrachtet werden. Der Term $\delta_i^r$ setzt sich wie nachfolgend zusammen\footnote{Aus der Gleichung \ref{eq:05_delta_hidden} ist ersichtlich, dass es sich bei $nm$ um eine Multiplikation handelt. $n$ läuft
+von $1$ bis $l$. Wird $n$ mit der Anzahl Gewichte $m$ pro Neuron der Schicht $k$ multipliziert, wird also jeweils das letzte Gewicht eines
+Neurons betrachtet. Dieses führt immer zu $z_i^r$.
+}:
+\begin{align}
+    \delta_1^k = \frac{\delta P_{err}}{\delta net_1^k}\\
+    \delta_l^k = \frac{\delta P_{err}}{\delta net_l^k}\\
+    \delta_i^r = \frac{\delta z_i^r}{\delta net_i^r} \cdot \delta_1^k \cdot w_3^k + \frac{\delta z_i^r}{\delta net_i^r} \cdot \delta_l^k \cdot w_{lm}^k\\
+    \delta_i^r = \frac{\delta z_i^r}{\delta net_i^r} \cdot (\delta_1^k \cdot w_3^k + \delta_l^k \cdot w_{lm}^k)\\
+    \delta_i^r = \frac{\delta z_i^r}{\delta net_i^r} \cdot \sum_n^l(\delta_n^k \cdot w_{nm}^k)\\
+    \delta_i^r = z_i^r(1 - z_i^r) \cdot \sum_n^l(\delta_n^k \cdot w_{nm}^k)\label{eq:05_delta_hidden}
+\end{align}
+\\
+
+Da der Term $\delta_i^r$ nun für beide Fälle bekannt ist, können zuletzt die Gewichte korrigiert werden.
+Man nehme nun an, dass es bei den Gewichten der Schicht $r$ die Inputs $x_{ij}^{r-1}$ der vorherigen Schicht $r-1$ gibt,
+die ebenso wie die Gewichte nummeriert sind. In dem Fall würde die Korrektur für $w_{ij}^r$ lauten:
+\begin{align}
+    \delta_i^r = \frac{\delta P_{err}}{\delta net_i^r}\\
+    w_{ij, neu}^r = w_{ij, alt}^r + \lambda \cdot \delta_i^r \cdot \frac{net_i^r}{\delta w_{ij}^r}\\
+    w_{ij, neu}^r = w_{ij, alt}^r + \lambda \cdot \delta_i^r \cdot x_{ij}^{r-1}
+\end{align}
+
+\newpage
+Zu guter Letzt kann noch der abschliessende Algorithmus \ref{alg:00_backpropagation} angegeben werden.\\
+\begin{algorithm}[H]
+    \For{o = last downto 2}{
+        \If {o == last}{
+            \For{t = 1 to i}{
+                $\delta_t^o = (d_t^o - z_t^o) \cdot z_t^o(1 - z_t^o)$
+            }
+        }
+        \Else{
+            \For{t = 1 to i}{
+                $\delta_t^o = z_t^o(1 - z_t^o) \cdot \sum_n^l(\delta_n^{o + 1} \cdot w_{nm}^{o + 1})$
+            }
+        }
+        \For{(t, h) = (1,1) to (i, j)}{
+            $\delta w_{th}^o = \delta_t^o \cdot w_{th}^{o}$\\
+            $w_{th, neu}^o = w_{th, alt}^o + \lambda \cdot \delta w_{th}^o$
+        }
+    }
+    \caption{Backpropagation Algorithmus}
+    \label{alg:00_backpropagation}
+\end{algorithm}
 
 \subsection{XOR und die Lösung}
