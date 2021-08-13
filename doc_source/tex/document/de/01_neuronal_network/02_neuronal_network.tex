@@ -82,29 +82,38 @@ Der Input-Layer wird nicht beachtet, dieser ist für die Berechnung irrelevant. 
 bilden die zwei zu unterscheidenden Fälle des Algorithmus.
 \\
 
+Es folgen einige generelle Bemerkungen zu den Abbildungen \ref{fig:08_backpropagation_output} und \ref{fig:09_backpropagation_hidden}.
 Der Algorithmus kann anhand eines neuronalen Netzes wie eine Schablone dreier Ebenen verstanden werden, die von rechts
 nach links über die Layer des Netzwerks geschoben wird.
 Es gibt eine blau markierte Ebene, diese ist dem aktuellen Berechnungsschritt von einem Vorausgehenden bereits bekannt.
 Hier muss also nichts gemacht werden, diese Werte kennt man. Die grün markierte Ebene ist diejenige, welche im aktuellen
 Berechnungsschritt für den Nächsten berechnet und auch gespeichert wird. Die orange markierte Ebene ist
-die Korrektur der Gewichte im aktuellen Berechnungsschritt für den aktuellen Layer.
+die Korrektur der Gewichte im aktuellen Berechnungsschritt für den aktuellen Layer. In den jeweiligen Ebenen gibt
+es eine relevante Stelle (als roter Pfeil markiert). Für jede Ebene hat diese Stelle eine gewisse Bedeutung. Bei der blauen Ebene markiert sie die
+Position des Layers, bis zu welcher der Wert bekannt ist. Bei der grünen Ebene markiert sie das Resultat, welches berechnet
+wird. Bei der orangen Ebene ist nur ein Beispiel für ein Gewicht gegeben. Auch dort wird das Resultat markiert, welches
+berechnet wird (Ableitung der Fehlerfunktion nach einem spezifischen Gewicht zur Korrektur desselben). Diese Information
+ist lediglich für den aktuellen Berechnungsschritt und Layer relevant und wird nicht gespeichert (das korrigierte Gewicht natürlich
+schon). Als Beispiel ist ebenfalls eine Reihe von Neuronen ersichtlich, deren Indizes vollständig ausgeschrieben wurden.
+Die untere Reihe wiederum befasst sich mit der verallgemeinert gültigen Schreibweise. Gewichte werden anhand der Neuronennummer
+im Layer wie auch der Nummer des Gewichts innerhalb des Neurons indexiert. Für ein Gewicht $2$ im Neuron $3$ des Layers
+$r$ lautet die Schreibweise demnach $w_{32}^r$.
 \\
 
-Zuerst betrachtet man den Fall, wo es sich um den Output-Layer handelt. Um dies zu veranschaulichen, kann
-die Abbildung \ref{fig:08_backpropagation_output} betrachtet werden. In der blauen Ebene der Abbildung sind die Werte ersichtlich,
-die zu diesem Zeitpunkt bekannt sind. In dem Fall gibt es keine folgende Schicht, da es sich selbst um den Output-Layer
-handelt und das einzig Bekannte ist somit der Fehlerwert $P_{err}$. Hierbei stehen die Angaben $r$ für die Schicht,
+Beim ersten Fall des Algorithmus handelt es sich um den Output-Layer. Um dies zu veranschaulichen, kann
+die Abbildung \ref{fig:08_backpropagation_output} betrachtet werden. In der blauen Ebene ist der Fehlerwert $P_{err}$
+gegeben. Hierbei stehen die Angaben $r$ für die zu berechnende Schicht,
 $i$ für die Anzahl der Neuronen der Schicht und $j$ für die Anzahl der Gewichte (Inputs), welche pro Neuron existieren.
 Weiterhin gibt es die vorherige Schicht $p$, welche wiederum aus $s$ Neuronen besteht.
 In diesem Beispiel ist $j = 3$. Die Gewichte erhalten dadurch mit $i = 2$ die folgende Nummerierung:
-$w_1^r$, $w_2^r$, $w_3^r$, $w_4^r$, $w_5^r$, $w_6^r$. Ebenfalls relevant ist hierbei, dass es sich um ein \glqq fully connected
+$w_{11}^r$, $w_{12}^r$, $w_{13}^r$, $w_{21}^r$, $w_{22}^r$, $w_{23}^r$. Ebenfalls relevant ist hierbei, dass es sich um ein \glqq fully connected
 Network\grqq{} handelt, also alle jeweiligen Outputs mit allen Neuronen der folgenden Schicht verbunden sind.
 
 \begin{figure}[h!]
     \begin{center}
         \includegraphics[width=1\linewidth]{../common/01_neuronal_network/00_resources/04_backpropagation_output.png}
     \end{center}
-    \caption{Die Output-Schicht eines neuronalen Netzes für Backpropagation}
+    \caption{Backpropagation für Output-Layer}
     \label{fig:08_backpropagation_output}
 \end{figure}
 Die grün markierte Ebene besteht nun aus der Berechnung des Terms $\delta_i^r$. Dieser Term beschreibt die Ableitungskette
@@ -132,36 +141,42 @@ Fehlerfunktion $P_{err}$ nach $net_l^k$. Wie bereits erwähnt gibt es so viele T
     \begin{center}
         \includegraphics[width=1\linewidth]{../common/01_neuronal_network/00_resources/05_backpropagation_hidden.png}
     \end{center}
-    \caption{Zwei Schichten eines neuronalen Netzes für Backpropagation}
+    \caption{Backpropagation für Hidden-Layer}
     \label{fig:09_backpropagation_hidden}
 \end{figure}
 
 Auch in diesem Fall geht es um die Berechnung des Terms $\delta_i^r$ in der grünen Ebene anhand der genannten bekannten Terme. Es müssen wiederum
-alle Pfade, welche zu dem Neuron führen, betrachtet werden. Der Term $\delta_i^r$ setzt sich wie nachfolgend zusammen\footnote{Aus der Gleichung \ref{eq:05_delta_hidden} ist ersichtlich, dass es sich bei $nm$ um eine Multiplikation handelt. $n$ läuft
-von $1$ bis $l$. Wird $n$ mit der Anzahl Gewichte $m$ pro Neuron der Schicht $k$ multipliziert, wird also jeweils das letzte Gewicht eines
-Neurons betrachtet. Dieses führt immer zu $z_i^r$.}:
+alle Pfade, welche zu dem Neuron führen, betrachtet werden. Der Term $\delta_i^r$ setzt sich wie nachfolgend zusammen\footnote{Aus der Gleichung \ref{eq:05_delta_hidden}
+ist ersichtlich, dass es sich bei $nm$ um den letzten Index aus den Neuronen handelt, wobei $n$
+von $1$ bis $l$ läuft. Dieser Index führt immer über ein Gewicht $nm$ zu $z_i^r$. $m$ kann hier auch anders gewählt werden,
+je nachdem, nach welchem $net^r$ abgeleitet werden soll.}:
 \begin{align}
     \delta_1^k = \frac{\delta P_{err}}{\delta net_1^k}\\
     \delta_l^k = \frac{\delta P_{err}}{\delta net_l^k}\\
-    \delta_i^r = \frac{\delta z_i^r}{\delta net_i^r} \cdot \delta_1^k \cdot w_3^k + \frac{\delta z_i^r}{\delta net_i^r} \cdot \delta_l^k \cdot w_{lm}^k\\
-    \delta_i^r = \frac{\delta z_i^r}{\delta net_i^r} \cdot (\delta_1^k \cdot w_3^k + \delta_l^k \cdot w_{lm}^k)\\
+    \delta_i^r = \frac{\delta z_i^r}{\delta net_i^r} \cdot \delta_1^k \cdot w_{13}^k + \frac{\delta z_i^r}{\delta net_i^r} \cdot \delta_l^k \cdot w_{lm}^k\\
+    \delta_i^r = \frac{\delta z_i^r}{\delta net_i^r} \cdot (\delta_1^k \cdot w_{13}^k + \delta_l^k \cdot w_{lm}^k)\\
     \delta_i^r = \frac{\delta z_i^r}{\delta net_i^r} \cdot \sum_n^l(\delta_n^k \cdot w_{nm}^k)\\
     \delta_i^r = z_i^r(1 - z_i^r) \cdot \sum_n^l(\delta_n^k \cdot w_{nm}^k)\label{eq:05_delta_hidden}
 \end{align}
 \\
 
 Da der Term $\delta_i^r$ nun für beide Fälle bekannt ist, können zuletzt die Gewichte in der orangen Ebene korrigiert werden.
-Man nehme an, dass es bei den Gewichten der Schicht $r$ die Inputs $z_{s}^{p}$ der vorherigen Schicht $p$ gibt,
-die ebenso wie die Gewichte nummeriert sind. In dem Fall würde die Korrektur für $w_{ij}^r$ lauten\footnote{An dieser
-Stelle aufgepasst: Es gibt noch einen Input mehr: $-1$, der Bias. Man könnte diesen ebenso als Input aus der vorherigen
-Schicht betrachten.}:
+Man nehme an, dass es bei den Gewichten der Schicht $r$ die Inputs $z_{s}^{p}$ der vorherigen Schicht $p$ gibt.
+In dem Fall lautet die Korrektur für $w_{ij}^r$:
 \begin{align}
     \delta_i^r = \frac{\delta P_{err}}{\delta net_i^r}\\
     w_{ij, neu}^r = w_{ij, alt}^r + \lambda \cdot \delta_i^r \cdot \frac{net_i^r}{\delta w_{ij}^r}\\
-    w_{ij, neu}^r = w_{ij, alt}^r + \lambda \cdot \delta_i^r \cdot z_{s}^{p}
+    w_{ij, neu}^r = w_{ij, alt}^r + \lambda \cdot \delta_i^r \cdot z_{s}^{p}\label{eq:06_korrektur_gewicht_backpropagation}
 \end{align}
+Wichtig ist zu erkennen, dass dasjenige $z_s^p$ relevant ist, welches mit dem Gewicht $w_{ij}^r$ multipliziert wird.
+In Bezug auf die beiden Abbildungen \ref{fig:08_backpropagation_output} und \ref{fig:09_backpropagation_hidden}
+kann das Beispiel der orangen Ebene für $w_{ij}^r$ betrachtet werden. In dem Fall ist $z_s^p$ relevant. Im Falle des Gewichts
+$w_{ij-2}^r$ führt der Weg über $-1$. Dieser Wert für den Bias könnte ebenso als Input $z_0^p$ der Schicht $p$ angesehen werden.
+Damit ist \ref{eq:06_korrektur_gewicht_backpropagation} allgemeingültig.
+\\
 
-Zu guter Letzt kann noch der abschliessende Algorithmus \ref{alg:00_backpropagation} angegeben werden.\\
+Zu guter Letzt kann noch der abschliessende Algorithmus \ref{alg:00_backpropagation} angegeben werden unter der Voraussetzung,
+dass der Biaswert $-1$ als Input $z_0^p$ gegeben wird.\\
 \begin{algorithm}[H]
     \For{o = last downto 2}{
         \If {o == last}{
@@ -175,7 +190,7 @@ Zu guter Letzt kann noch der abschliessende Algorithmus \ref{alg:00_backpropagat
             }
         }
         \For{(t, h) = (1,1) to (i, j)}{
-            \textcolor{BackpropOrange}{$\delta w_{th}^o$} $= \delta_t^o \cdot z_{th}^{o - 1}$\\
+            \textcolor{BackpropOrange}{$\delta w_{th}^o$} $= \delta_t^o \cdot z_{h-1}^{o - 1}$\\
             $w_{th, neu}^o = w_{th, alt}^o + \lambda \cdot \delta w_{th}^o$
         }
     }
